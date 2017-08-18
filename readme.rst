@@ -48,13 +48,15 @@ Pythonic things to Know:
 
 * collections
 * requests
-* BeautifulSoup4
+* BeautifulSoup4 (select, text)
 * json
 * pickle
 * codecs
 * class, __init__, self, super
 * property, classmethod, staticmethod
 * nltk
+
+
 
 
 Day 4
