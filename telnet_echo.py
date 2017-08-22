@@ -5,7 +5,7 @@
 Simple echo server that echoes back client input.
 
 You can run this .tac file directly with:
-    twistd -ny telnet_echo.tac
+    python telnet_echo.py
 
 This demo sets up a listening port on 6023 which accepts telnet connections.
 No login for the telnet server is required.
@@ -37,6 +37,7 @@ class TelnetEcho(TelnetProtocol):
 
 
     def dataReceived(self, data):
+        
         self.transport.write(b"I received "+ data + b" from you\r\n")
 
 

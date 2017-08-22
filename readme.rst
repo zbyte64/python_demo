@@ -110,4 +110,21 @@ Pythonic things to Know:
 
 * logging
 * argparse
+* threading
 * multiprocessing / message passing
+* asyncio
+
+
+Async strategies:
+
+* callbacks
+* deferred
+* await
+
+
+Threading topics:
+
+* Main thread, child threads & joining
+* Shared memory
+* GIL
+* Locks & Semaphores
