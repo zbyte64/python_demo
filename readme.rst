@@ -120,6 +120,10 @@ Async strategies:
 * callbacks
 * deferred
 * await
+* gevent monkey patch
+
+Asyncio primer: https://pymotw.com/3/asyncio/coroutines.html
+Aiohttp: http://aiohttp.readthedocs.io/en/stable/
 
 
 Threading topics:
@@ -128,3 +132,5 @@ Threading topics:
 * Shared memory
 * GIL
 * Locks & Semaphores
+
+Example: semaphore downloader; will download many urls, but only one request at a time per domain.
