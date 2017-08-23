@@ -1,73 +1,96 @@
 from twisted.conch.telnet import TelnetTransport, TelnetProtocol
-from twisted.internet import reactor
+from twisted.internet import asyncioreactor, defer
 from twisted.internet.protocol import ServerFactory
 from twisted.application.internet import TCPServer
 from twisted.application.service import Application
+import asyncio
 
 
 class GameWorld(object):
     def __init__(self, io):
-        self._io = io
+        self.io = io
 
-    def scene1(self):
-        self.io.send('>')
-        self.io.get_input(self.scene1_response)
+    async def start(self):
+        await self.scene1()
 
-    def scene1_response(self, msg):
-        self.io.send('We got: '+msg)
+    async def scene1(self):
+        self.io.send('What is your name? ')
+        self.player_name = await self.io.get_input()
+        print("got player name:", self.player_name)
+        self.io.send('Hello '+self.player_name+"\n")
+        await self.scene2()
 
-
-    async def async_scene1(self):
-        self.io.send('>')
+    async def scene2(self):
+        self.io.send('This is the final scene, do you continue? ')
         msg = await self.io.get_input()
-        self.io.send('We got: '+msg)
+        if msg[0].lower() == 'y':
+            self.io.send('Poor choice\n')
+        else:
+            self.io.send('Wise choice\n')
 
 
-class IOQue(object): #shouldn't this be from collections?
-    def __init__(self):
+class IOBus(object):
+    '''
+    asyncio bus for twisted
+    '''
+    def __init__(self, transport):
         self._input_cb = None
-        self._messages = list() #deque?
+        self.transport = transport
 
     def send(self, astr):
-        self._messages.append(astr)
+        self.transport.write(astr.encode('utf8'))
 
-    def get_input(self, cb):
-        self._input_cb = cb
+    def get_input(self):
+        '''
+        Returns an awaitable future
+        '''
+        future = asyncio.Future()
+        self._input_cb = future.set_result
+        return future
 
-    def receive(self, astr):
+    def receive(self, data):
         if self._input_cb:
-            self._input_cb(astr)
+            self._input_cb(data.decode('utf8').strip())
             self._input_cb = None
         else:
-            self.send('LULZ')
+            print('lost receive')
 
-    def get_messages(self):
-        msgs, self._messages = self._messages, []
-        return msgs
+    def prime(self, fn):
+        '''
+        prime the io pump.
+        starts a coroutine to push io and closes the transport when done.
+        '''
+        f = asyncio.ensure_future(fn())
+        f.add_done_callback(lambda x: self.transport.loseConnection())
+        return f
 
 
 class TelnetWorld(TelnetProtocol):
-    def __init__(self, io_bus):
-        self.io_bus = io_bus
+    def __init__(self):
+        self.world_busses = dict()
         super(TelnetWorld, self).__init__()
 
+    def connectionMade(self):
+        print('making game world')
+        iobus = IOBus(self.transport)
+        world = GameWorld(iobus)
+        self.world_busses[self.transport] = iobus
+        iobus.prime(world.start)
+
     def dataReceived(self, data):
-        for msg in self.io_bus.get_messages():
-            self.transport.write(msg.encode('utf8'))
-        self.io_bus.receive(data)
+        self.world_busses[self.transport].receive(data)
 
-
-io_bus = IOQue()
-world = GameWorld(io_bus)
+    def connectionLost(self, reason):
+        del self.world_busses[self.transport]
 
 
 factory = ServerFactory()
-factory.protocol = lambda: TelnetTransport(TelnetWorld, io_bus=io_bus)
-#service = TCPServer(6023, factory)
+factory.protocol = lambda: TelnetTransport(TelnetWorld)
 
-#application = Application("Telnet Echo Server")
-#service.setServiceParent(application)
 
 if __name__ == '__main__':
+    #enables asyncio on twisted
+    asyncioreactor.install(asyncio.get_event_loop())
+    from twisted.internet import reactor
     reactor.listenTCP(6023, factory)
     reactor.run()

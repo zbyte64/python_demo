@@ -14,7 +14,8 @@ from sumy.utils import get_stop_words
 
 LANGUAGE = "english"
 
-HOST_SEMAPHORE = defaultdict(Semaphore)
+#allow 2 downloads at a time
+HOST_SEMAPHORE = defaultdict(lambda: Semaphore(2))
 
 def summerize(text):
     parser = PlaintextParser.from_string(text, Tokenizer(LANGUAGE))
