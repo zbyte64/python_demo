@@ -40,13 +40,16 @@ class IOBus(object):
     def send(self, astr):
         self.transport.write(astr.encode('utf8'))
 
-    def get_input(self):
+    def get_input(self, cb=None):
         '''
-        Returns an awaitable future
+        Returns an awaitable future if no callback is given
         '''
-        future = asyncio.Future()
-        self._input_cb = future.set_result
-        return future
+        if cb:
+            self._input_cb = cb
+        else:
+            future = asyncio.Future()
+            self._input_cb = future.set_result
+            return future
 
     def receive(self, data):
         if self._input_cb:
@@ -66,22 +69,14 @@ class IOBus(object):
 
 
 class TelnetWorld(TelnetProtocol):
-    def __init__(self):
-        self.world_busses = dict()
-        super(TelnetWorld, self).__init__()
-
     def connectionMade(self):
         print('making game world')
-        iobus = IOBus(self.transport)
-        world = GameWorld(iobus)
-        self.world_busses[self.transport] = iobus
-        iobus.prime(world.start)
+        self.iobus = IOBus(self.transport)
+        self.world = GameWorld(self.iobus)
+        self.iobus.prime(self.world.start)
 
     def dataReceived(self, data):
-        self.world_busses[self.transport].receive(data)
-
-    def connectionLost(self, reason):
-        del self.world_busses[self.transport]
+        self.iobus.receive(data)
 
 
 factory = ServerFactory()

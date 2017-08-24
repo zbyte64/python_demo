@@ -108,8 +108,6 @@ Day 5
 
 Pythonic things to Know:
 
-* logging
-* argparse
 * threading
 * multiprocessing / message passing
 * asyncio
@@ -134,3 +132,20 @@ Threading topics:
 * Locks & Semaphores
 
 Example: semaphore downloader; will download many urls, but only one request at a time per domain.
+
+
+Day 6
+=====
+
+* scikit-learn
+* environment variables
+* 12 factor applications
+* logging
+* argparse
+* twisted clients: IRC, sendmail, broadcast
+* twistedweb
+
+Examples:
+
+* telnet_game.py
+* ircLogBot.py
