@@ -56,18 +56,18 @@ class MessageLogger:
 
 class LogBot(irc.IRCClient):
     """A logging IRC bot."""
-    
+
     nickname = "twistedbot"
-    
+
     def connectionMade(self):
         irc.IRCClient.connectionMade(self)
         self.logger = MessageLogger(open(self.factory.filename, "a"))
-        self.logger.log("[connected at %s]" % 
+        self.logger.log("[connected at %s]" %
                         time.asctime(time.localtime(time.time())))
 
     def connectionLost(self, reason):
         irc.IRCClient.connectionLost(self, reason)
-        self.logger.log("[disconnected at %s]" % 
+        self.logger.log("[disconnected at %s]" %
                         time.asctime(time.localtime(time.time())))
         self.logger.close()
 
@@ -86,7 +86,7 @@ class LogBot(irc.IRCClient):
         """This will get called when the bot receives a message."""
         user = user.split('!', 1)[0]
         self.logger.log("<%s> %s" % (user, msg))
-        
+
         # Check to see if they're sending me a private message
         if channel == self.nickname:
             msg = "It isn't nice to whisper!  Play nice with the group."
@@ -144,14 +144,14 @@ class LogBotFactory(protocol.ClientFactory):
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
-        print "connection failed:", reason
+        print("connection failed:", reason)
         reactor.stop()
 
 
 if __name__ == '__main__':
     # initialize logging
     log.startLogging(sys.stdout)
-    
+
     # create factory protocol and application
     f = LogBotFactory(sys.argv[1], sys.argv[2])
 

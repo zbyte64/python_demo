@@ -137,13 +137,14 @@ Example: semaphore downloader; will download many urls, but only one request at 
 Day 6
 =====
 
-* scikit-learn
+* OSI Model
+* 12 factor applications - https://12factor.net/
 * environment variables
-* 12 factor applications
-* logging
-* argparse
+* logging - http://docs.python-guide.org/en/latest/writing/logging/
 * twisted clients: IRC, sendmail, broadcast
 * twistedweb
+* argparse
+* scikit-learn
 
 Examples:
 

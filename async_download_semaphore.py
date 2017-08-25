@@ -29,8 +29,8 @@ async def fetch(session, url):
     async fetch with timeout and host semaphore
     '''
     hostname = urlparse(url).hostname
+    HOST_SEMAPHORE[hostname].acquire()
     try:
-        HOST_SEMAPHORE[hostname].acquire()
         with async_timeout.timeout(10):
             async with session.get(url) as response:
                 return await response.text()
