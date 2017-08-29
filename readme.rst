@@ -150,3 +150,13 @@ Examples:
 
 * telnet_game.py
 * ircLogBot.py
+
+
+Day 7
+=====
+
+* gensim - https://radimrehurek.com/gensim/
+* django - https://tutorial.djangogirls.org/
+* extending django manually - https://djangogirls.gitbooks.io/django-girls-tutorial-extensions/
+* django packages - https://djangopackages.org/
+* example install: comments
