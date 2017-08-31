@@ -160,3 +160,20 @@ Day 7
 * extending django manually - https://djangogirls.gitbooks.io/django-girls-tutorial-extensions/
 * django packages - https://djangopackages.org/
 * example install: comments
+
+
+Day 8
+=====
+
+* python visualization libraries - seaborn, bokeh, holoviews, altair
+* seaborn - https://seaborn.pydata.org/introduction.html - matplotlib ++
+* bokeh - https://bokeh.pydata.org/en/latest/ - d3.js
+* holoviews - http://holoviews.org/ - bokeh simplified
+* altair - https://github.com/altair-viz/altair - declarative graphs
+
+* Django API docs - https://docs.djangoproject.com/en/1.11/topics/
+* Builtin template tags - https://docs.djangoproject.com/en/1.11/ref/templates/builtins/
+* Model Fields - https://docs.djangoproject.com/en/1.11/ref/models/fields/
+* Django Middleware - https://docs.djangoproject.com/en/1.11/topics/http/middleware/
+* Sessions - https://docs.djangoproject.com/en/1.11/topics/http/sessions/
+* Forms - https://docs.djangoproject.com/en/1.11/topics/forms/
