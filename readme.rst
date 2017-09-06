@@ -177,3 +177,19 @@ Day 8
 * Django Middleware - https://docs.djangoproject.com/en/1.11/topics/http/middleware/
 * Sessions - https://docs.djangoproject.com/en/1.11/topics/http/sessions/
 * Forms - https://docs.djangoproject.com/en/1.11/topics/forms/
+
+
+Day 9
+=====
+
+Django Admin
+
+* https://docs.djangoproject.com/en/1.11/ref/contrib/admin/
+* list_display
+* ModelAdmin options
+* Template override: "admin/<appname>/<modelname>/<view>.html" - https://docs.djangoproject.com/en/1.10/ref/contrib/admin/#templates-which-may-be-overridden-per-app-or-model
+* Admin actions
+* Admin Themes
+* Autocomplete widgets - https://django-select2.readthedocs.io/en/latest/index.html
+* Image Cropping - https://github.com/jonasundderwolf/django-image-cropping
+* Hierarchies - http://django-treebeard.readthedocs.io/en/latest/
